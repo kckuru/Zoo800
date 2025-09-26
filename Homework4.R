@@ -1,6 +1,6 @@
-#######################
-#### Homework 4 #######
-#######################
+##########################
+####### Homework 4 #######
+##########################
 
 # Group members: Keeley Kuru, Joseph Munoz and Lonnie Parry
 # Date: 9/25/25
@@ -14,7 +14,7 @@ penguins
 
 # 1a.
 # Convert a continuous variable into a binary variable
-convert_to_binary <- function(variable, breakpoint, labels) {
+convert_to_binary <- function(variable, breakpoint, labels = c("low", "high")) {
   ifelse(variable <= breakpoint, labels[1], labels[2])
 }
 
@@ -124,7 +124,7 @@ library(ggplot2)
 plot_by_species_size <- function(data, mass_var, species_var, category_var) {
   ggplot(data, aes_string(x = category_var, y = mass_var, fill = category_var)) +
     geom_boxplot(outlier.shape = NA, alpha = 0.7) + 
-    geom_jitter(width = 0.2, alpha = 0.4, size = 1) + # you are able to see individual points
+    geom_jitter(width = 0.2, alpha = 0.4, size = 1) + # individual points
     facet_wrap(as.formula(paste("~", species_var))) +
     labs(
       title = "Penguin Body Mass by Species and Size Category",
