@@ -47,11 +47,85 @@ library(ncdf4)
 filename.nc <- nc_open("Data/filename.nc")
 print(filename.nc)
 
+# read coordinate (dimension) variables
+depth <- ncvar_get(filename.nc , "depth")  # numeric (m)
+time <- ncvar_get(filename.nc , "time")    # seconds
+lake <- ncvar_get(filename.nc , "lake")
 
 
+## Reading multiple files at once
+# You can:
+# List all files needed in a folder
+# Loop over the list
+# Combine into one dataset
+
+# Key functions:
+list.files # list file names
+lapply() # read them
+dplyr::bind_rows() # combine
+
+all.files <- list.files("Data/filename", full.names = TRUE) # full.names = TRUE will show the entire file path including folder
+all.files
+
+# List files with specific first part
+specific.files <- list.files("Data/filename", pattern = specific, full.names = TRUE)
+specific.files
+
+# Read them all into a list
+specific.files <- lapply(specific.files, read.csv)
+
+# Combine into one data frame
+specific.files <- dplyr::bind_rows(specific.files)
 
 
+# -- Part 2. Wrangling Data -- #
 
+## Some very useful verbs (dplyr):
+# filter() -> keep rows
+# selectr() -> pick columns
+# mutate() -> create new variables
+# summarize() + group_by() -> calculate summaries
 
+## The Pipe Operator %>%
+# Passes the result of one step into the next
+# Makes code read like a recipe
+
+library(dplyr)
+
+fish <- read.csv("Data/filename.csv") # from Luoliang's file
+
+head(fish)
+
+# keep Walleye from Lake Erie and just a few columns
+fish_1 <- fish %>%
+  filter(Species == "Walleye", Lake == "Erie") %>%
+  select(Species, Lake, Year, Length_cm, Weight_g)
+head(fish_1) # list all Walleye in Lake Erie excluding the column "Age_years"
+
+# mutate creating new variables
+fish_2 <- fish %>%
+  mutate(
+    Weight_kg = Weight_g / 1000
+  ) %>%
+  select(Species, Lake, Length_cm, Weight_g, Weight_kg)
+head(fish_2)
+
+# mean length by lake
+fish_3 <- fish %>%
+  group_by(Lake) %>%
+  summarise(
+    mean_len = mean (Length_cm, na.rm = TRUE),
+    n = n()
+  )
+fish_3
+
+# mean length by Lake x Species
+fish_4 <- fish %>%
+  group_by(Lake, Species) %>%
+  summarise(
+    mean_len = mean (Length_cm, na.rm = TRUE),
+    n = n()
+  )
+fish_4
 
 
