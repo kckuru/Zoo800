@@ -84,3 +84,22 @@ fish_output <- fish.csv %>%
 
 # Save result as Excel file
 write_xlsx(fish_output, "output/fish_output.xlsx")
+
+# -- Objective 4 -- #
+
+library(dplyr)
+library(readr)
+library(purrr)
+
+data_path <- "~/Quantitative_course_week5/HW/Data/Multiple_files"
+
+files <- list.files(data_path, pattern = "\\.csv$", full.names = TRUE)
+if (length(files) == 0) stop("No CSV files found in ", data_path)
+
+fish_all <- map_dfr(files, ~ read_csv(.x) %>% mutate(filename = basename(.x)))
+
+fish_all <- fish_all %>%
+  mutate(year = as.integer(gsub(".*_(\\d{4})\\.csv$", "\\1", filename)))
+
+head(fish_all)
+
