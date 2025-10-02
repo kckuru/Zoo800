@@ -85,8 +85,3 @@ fish_output <- fish.csv %>%
 
 # Save result as Excel file
 write_xlsx(fish_output, "output/fish_output.xlsx")
-
-
-
-
-
