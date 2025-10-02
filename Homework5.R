@@ -90,16 +90,24 @@ write_xlsx(fish_output, "output/fish_output.xlsx")
 library(dplyr)
 library(readr)
 library(purrr)
+library(here)
 
-data_path <- "~/Quantitative_course_week5/HW/Data/Multiple_files"
+# Path to Multiple_files inside your project
+data_path <- here("Multiple_files")
 
+# List all CSV files
 files <- list.files(data_path, pattern = "\\.csv$", full.names = TRUE)
 if (length(files) == 0) stop("No CSV files found in ", data_path)
 
+# Read and combine all CSV files into one data frame
 fish_all <- map_dfr(files, ~ read_csv(.x) %>% mutate(filename = basename(.x)))
 
+# Extract year from filename (fish_2017.csv → 2017)
 fish_all <- fish_all %>%
   mutate(year = as.integer(gsub(".*_(\\d{4})\\.csv$", "\\1", filename)))
 
-head(fish_all)
+# Save combined data
+write_csv(fish_all, here("output", "fish_all_combined.csv"))
 
+# View first rows
+head(fish_all)
