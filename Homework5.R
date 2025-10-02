@@ -5,9 +5,8 @@
 # Group members: Keeley Kuru, Joseph Munoz and Lonnie Parry
 # Date: 10/2/25
 
-# -- Objective 1 (portable) -- #
+# -- Objective 1 -- #
 
-# Load needed package
 library(readxl)
 library(here)
 
