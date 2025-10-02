@@ -5,21 +5,16 @@
 # Group members: Keeley Kuru, Joseph Munoz and Lonnie Parry
 # Date: 10/2/25
 
-# -- Objective 1 -- #
-setwd("/Users/keeleykuru/Documents/Kuru_Classwork/Zoo800/Kuru_Homework5")
+# -- Objective 1 (portable) -- #
 
-# Make R read an Excel file
+# Load needed package
 library(readxl)
-fish.xlsx <- read_excel("/Users/keeleykuru/Documents/Kuru_Classwork/Zoo800/Kuru_Homework5/fish.xlsx")
-fish.xlsx
+library(here)
 
-# Read a CSV file
-fish.csv <- read.csv("/Users/keeleykuru/Documents/Kuru_Classwork/Zoo800/Kuru_Homework5/fish.csv")
-fish.csv
+fish.xlsx <- read_excel(here("fish.xlsx"))
+fish.csv  <- read.csv(here("fish.csv"))
+fish.rds  <- readRDS(here("fish.rds"))
 
-# Read R-specific format (.rds)
-fish.rds <- readRDS ("/Users/keeleykuru/Documents/Kuru_Classwork/Zoo800/Kuru_Homework5/fish.rds")
-fish.rds
 
 # Print first 5 rows of each dataset
 cat("First 5 rows of fish.xlsx:\n")
