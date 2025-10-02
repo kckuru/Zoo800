@@ -85,6 +85,7 @@ fish_output <- fish.csv %>%
 # Save result as Excel file
 write_xlsx(fish_output, "output/fish_output.xlsx")
 
+
 # -- Objective 4 -- #
 
 library(dplyr)
@@ -102,7 +103,7 @@ if (length(files) == 0) stop("No CSV files found in ", data_path)
 # Read and combine all CSV files into one data frame
 fish_all <- map_dfr(files, ~ read_csv(.x) %>% mutate(filename = basename(.x)))
 
-# Extract year from filename (fish_2017.csv → 2017)
+# Extract year from filename
 fish_all <- fish_all %>%
   mutate(year = as.integer(gsub(".*_(\\d{4})\\.csv$", "\\1", filename)))
 
