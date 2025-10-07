@@ -82,7 +82,7 @@ plot8 <- ggplot(data=penguins, mapping = aes(x = species, y = body_mass_g)) +
 
 plot8
 
-#Change the color palette
+# Change the color palette
 plot9 <- plot2 + scale_color_brewer(palette = "Set2")
 
 plot9
