@@ -2,11 +2,11 @@ library(tidyverse)
 library(palmerpenguins)
 
 # Remove NA values
-penguins_clean <- penguins %>%
+penguins_clean_data <- penguins %>%
   filter(!is.na(flipper_length_mm), !is.na(sex), !is.na(species))
 
 # Violin + jitter plot
-ggplot(penguins_clean, aes(x = species, y = flipper_length_mm, fill = sex)) +
+ggplot(penguins_clean_data, aes(x = species, y = flipper_length_mm, fill = sex)) +
   # violin plot
   geom_violin(position = position_dodge(width = 0.8), trim = FALSE, alpha = 0.7) +
   # jitter plot
