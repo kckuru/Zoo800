@@ -16,7 +16,7 @@ ggplot(penguins_clean, aes(x = species, y = flipper_length_mm, fill = sex)) +
   ) +
   # labels (title, x, y, fill)
   labs(
-    title = "Average Flipper Length by Species and Sex",
+    title = "Average Penguin Flipper Length by Species and Sex",
     x = "Penguin species",
     y = "Flipper length (mm)",
     fill = "Sex"
