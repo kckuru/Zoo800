@@ -1,40 +1,34 @@
 library(tidyverse)
 library(palmerpenguins)
 
-# Summary data: mean and standard error of flipper length (mm) by species & sex 
-summary_df <- penguins %>%
-  filter(!is.na(flipper_length_mm), !is.na(sex), !is.na(species)) %>%
-  group_by(species, sex) %>%
-  summarise(
-    n = n(),
-    mean_flipper = mean(flipper_length_mm, na.rm = TRUE),
-    se_flipper = sd(flipper_length_mm, na.rm = TRUE) / sqrt(n),
-    .groups = "drop"
-  )
+# Remove NA values
+penguins_clean <- penguins %>%
+  filter(!is.na(flipper_length_mm), !is.na(sex), !is.na(species))
 
-print(summary_df)
-
-penguin_plot <- ggplot(summary_df, aes(x = species, y = mean_flipper, fill = sex)) +
-  geom_col(position = position_dodge(width = 0.75), width = 0.7, colour = NA) +
-  geom_errorbar(aes(ymin = mean_flipper - se_flipper, ymax = mean_flipper + se_flipper),
-                position = position_dodge(width = 0.75),
-                width = 0.2, size = 0.6) +
-  # Labels
+# Violin + jitter plot
+ggplot(penguins_clean, aes(x = species, y = flipper_length_mm, fill = sex)) +
+  # violin plot
+  geom_violin(position = position_dodge(width = 0.8), trim = FALSE, alpha = 0.7) +
+  # jitter plot
+  geom_jitter(
+    position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8),
+    size = 1.5, alpha = 0.5, shape = 21
+  ) +
+  # labels (title, x, y, fill)
   labs(
-    title = "Mean Flipper Length by Species and Sex",
+    title = "Average Flipper Length by Species and Sex",
     x = "Penguin species",
-    y = "Mean flipper length (mm)",
+    y = "Flipper length (mm)",
     fill = "Sex"
   ) +
+  scale_fill_manual(values = c("female" = "darkmagenta", "male" = "deepskyblue")) +
   theme_classic(base_size = 14) +
   theme(
-    plot.title = element_text(size = 16, face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = 12, margin = margin(b = 8)),
+    plot.title = element_text(size = 16, face = "bold"),
     axis.title = element_text(size = 14),
     axis.text = element_text(size = 12),
-    legend.title = element_text(size = 12),
-    legend.text = element_text(size = 11)
-  ) +
-  scale_fill_manual(values = c("female" = "#0072B2", "male" = "#D55E00"))
+    legend.title = element_text(size = 12)
+  )
 
-penguin_plot
+# Save as PNG
+ggsave("penguin_violin_jitter.png", width = 8, height = 6, dpi = 300)
