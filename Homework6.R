@@ -1,5 +1,5 @@
 ##########################
-####### Homework 5 #######
+####### Homework 6 #######
 ##########################
 
 # Group members: Keeley Kuru and Elizabeth Braatz
@@ -75,6 +75,7 @@ for (i in 1:n_sims) {
   
   sim_results <- rbind(sim_results, temp_df)
 }
+
 
 
 
