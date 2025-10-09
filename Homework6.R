@@ -143,7 +143,7 @@ for (t in 1:years) {
 }
 mean_df <- data.frame(Year = 0:years, Population = N_mean)
 
-# Plot all trajectories + target line
+# Plot all trajectories plus the red target line
 p1 <- ggplot() +
   geom_line(data = sim_results, aes(x = Year, y = Population, group = Simulation),
             color = "lightskyblue", alpha = 0.4, size = 0.7) +
@@ -151,7 +151,7 @@ p1 <- ggplot() +
             color = "blue", size = 1.2) +
   geom_hline(yintercept = target, linetype = "dashed", color = "red", size = 1) +
   labs(title = "Hellbender Population Growth (25 years)",
-       subtitle = "50 simulated trajectories; red dashed = target (800 individuals)",
+       subtitle = "50 simulated trajectories plus red dashed line (target = 800 individuals)",
        x = "Year", y = "Population Size") +
   theme_minimal()
 
