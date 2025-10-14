@@ -47,7 +47,7 @@ library(RColorBrewer)
 library(ggplot2)
 library(dplyr)
 
-# Read shapefile (relative path)
+# Read shapefile
 philly <- st_read("Philly3/Philly3.shp")
 
 names(philly)
@@ -60,10 +60,6 @@ pal <- brewer.pal(5, "OrRd")
 
 # Quantile breaks
 br_HOMIC <- classIntervals(philly_sp$HOMIC_R, n = 5, style = "quantile")$brks
-# Add small offsets for symmetry
-offs <- 1e-07
-br_HOMIC[1] <- br_HOMIC[1] - offs
-br_HOMIC[length(br_HOMIC)] <- br_HOMIC[length(br_HOMIC)] + offs
 
 # Plot map
 spplot(philly_sp, "HOMIC_R",
