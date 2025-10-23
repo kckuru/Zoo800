@@ -138,9 +138,173 @@ revision <- "41"
 package_id <- paste(scope, identifier, revision, sep = ".")
 package_id
 
+install.packages("remotes")
+remotes::install_github("EDIorg/EDIutils")
+
+library(EDIutils)
+package_info <- get_package(package_id)
 
 
 
+# Get the EDI package info
+package_info <- get_package(package_id)
 
+# List all data objects in the package
+package_info$dataTable
+
+# Suppose the CSV file you want is the first data table
+csv_url <- package_info$dataTable$physical[[1]]$distribution$url
+
+# Read CSV directly into R
+ntl_data <- read_csv(csv_url)
+
+# Inspect the first few rows
+head(ntl_data)
+
+## ----- In-class activity --- ##
+
+# Valeria
+# Platypus
+# Azerbaijan
+# Goop
+# Winter
+
+# Install duckdb from CRAN
+install.packages("duckdb")
+
+# Load the package
+library(duckdb)
+
+# Install gbifdb from CRAN
+install.packages("gbifdb")
+
+library(dplyr)
+library(gbifdb)
+
+gbif <- gbif_remote()
+
+platypus_aus <- gbif %>%
+  filter(species == "Ornithorhynchus anatinus",
+         countrycode == "AU") %>%
+  group_by(year) %>%
+  summarise(n_records = n()) %>%
+  arrange(year)
+
+# View results
+platypus_aus
+
+# Pull the data into a local tibble
+platypus_aus_local <- platypus_aus %>%
+  collect()
+
+# View the data
+platypus_aus_local
+
+# Print the first few rows
+head(platypus_aus_local)
+
+# Or view the full table (if not too large)
+platypus_aus_local
+
+
+library(gbifdb)
+library(dplyr)
+
+gbif_conn <- gbif_remote()
+
+gbif_conn <- gbif_remote(backend = "duckdb", bucket = "gbif-open-data-us-east-1")
+
+tb1 <- gbif_conn %>%
+  filter(species == "Ornithorhynchus anatinus",
+         countrycode == "AU",
+         year > 2000) %>%
+  select(species, countrycode, decimallatitude, decimallongitude, eventdate) %>%
+  arrange(desc(eventdate)) %>%
+  head(1000)
+
+df <- collect(tbl)
+
+
+# -- Olaf shared code -- #
+
+#install.packages("gbifdb")
+library(gbifdb)
+library(dplyr)    # for using dplyr style
+
+gbif_conn <- gbif_remote()
+
+gbif_conn <- gbif_remote(backend = "duckdb", bucket = "gbif-open-data-us-east-1")
+
+# Suppose we want occurrences of a species in a country after 2000:
+tbl <- gbif_conn %>%
+  filter(species == "Danaus plexippus",
+         countrycode == "US",
+         year > 2000) %>%
+  select(species, countrycode, decimallatitude, decimallongitude, eventdate) %>%
+  arrange(desc(eventdate)) %>%
+  head(1000)   # just pull first 1000
+
+df <- collect(tbl)  # bring into R
+
+
+# -- New updated code for Platypuses in Australia -- #
+
+# Install and load packages if needed
+# install.packages("gbifdb")
+library(gbifdb)
+library(dplyr)
+
+# Connect to GBIF open data (DuckDB backend, US-East-1 bucket)
+gbif_conn <- gbif_remote(backend = "duckdb", bucket = "gbif-open-data-us-east-1")
+
+# Query: Platypus occurrences in Australia since 2000
+tbl <- gbif_conn %>%
+  filter(
+    species == "Ornithorhynchus anatinus",
+    countrycode == "AU",
+    year > 2000
+  ) %>%
+  select(
+    species,
+    countrycode,
+    decimallatitude,
+    decimallongitude,
+    eventdate,
+    basisofrecord
+  ) %>%
+  arrange(desc(eventdate)) %>%
+  head(1000)
+
+# Pull data into R memory
+platypus_aus <- collect(tbl)
+
+print(platypus_aus)
+
+# Count Platypus occurrences in Australia since 2000
+count_tbl <- gbif_conn %>%
+  filter(
+    species == "Ornithorhynchus anatinus",
+    countrycode == "AU",
+    year > 2000
+  ) %>%
+  summarise(total_records = n())
+
+# Bring the count into R
+count_result <- collect(count_tbl)
+
+print(count_result)
+
+
+# Count occurrences of a species in Azerbaijan since 2000
+count_az <- gbif_conn %>%
+  filter(
+    species == "Ornithorhynchus anatinus",
+    countrycode == "AZ",
+    year > 2000
+  ) %>%
+  summarise(total_records = n()) %>%
+  collect()
+
+print(count_az)
 
 
