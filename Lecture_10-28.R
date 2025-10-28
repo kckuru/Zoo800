@@ -87,9 +87,19 @@
 # 3. Is this true?
 # --> Use fitdistrplus to compare distributions from 1. and 2.
 # ---> Yes, fitdistrplus can be used to compare how well different distributions fit the data.
-fitdistrplus
-denscomp()
+hist(rnorm(1000, mean = 0, sd = 1), main = "Normal Distribution")
+install.packages("fitdistrplus")
+library(fitdistrplus)
 
+x <- rnorm(1000, mean = 0, sd = 1)
+fit_norm <- fitdist(x, "norm")
+denscomp(list(fit_norm), main = "Density Comparison")
+
+y <- rlnorm(1000, meanlog = 0, sdlog = 1)
+fit_lognorm <- fitdist(y, "lnorm")
+denscomp(list(fit_lognorm), main = "Density Comparison")
+
+# 4. Coin flip example
 # Don Corleone challenges you to flip a coin three times. Each time the loser owes the winner a favor.
 # -> After four heads, you owe him four favors. And you’re wondering if the game is rigged
 # --> What is the probability that the probability of heads is > 0.5
