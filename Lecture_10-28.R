@@ -74,10 +74,41 @@
 # -> MASS and fitdistrplus packages
 # --> denscomp() plot function
 
+# In-class exercise:
 
+# 1. Is this true?
+# --> The accumulation (sum) of many small random errors from any distribution is normally distributed.
+# ---> Yes, according to the Central Limit Theorem.
 
+# 2. Is this true?
+# --> What if the process is multiplicative rather than additive?
+# ---> No, the Central Limit Theorem applies to additive processes. Multiplicative processes often lead to log-normal distributions.
 
+# 3. Is this true?
+# --> Use fitdistrplus to compare distributions from 1. and 2.
+# ---> Yes, fitdistrplus can be used to compare how well different distributions fit the data.
+fitdistrplus
+denscomp()
 
+# Don Corleone challenges you to flip a coin three times. Each time the loser owes the winner a favor.
+# -> After four heads, you owe him four favors. And you’re wondering if the game is rigged
+# --> What is the probability that the probability of heads is > 0.5
+# ---> Use the beta distribution to model the probability of heads given the number of heads and tails observed
+# ----> Use the pbeta() function to calculate the cumulative probability of heads > 0.5
+# Answer: 0.96875
+# Why?
+# -> We observed 4 heads and 0 tails
+# -> So we use a beta distribution with alpha = 4 + 1 = 5 and beta = 0 + 1 = 1
+# --> We want to find P(p > 0.5) = 1 - P(p <= 0.5)
+# ---> P(p <= 0.5) = pbeta(0.5, shape1 = 5, shape2 = 1)
+# ----> P(p > 0.5) = 1 - pbeta(0.5, shape1 = 5, shape2 = 1) = 0.96875
 
+P(p > 0.5) = 1 - P(p ≤ 0.5)
+1 - pbeta(0.5, shape1 = 5, shape2 = 1)
+= 1 - (0.5)^5
+= 1 - 0.03125
+= 0.96875
+
+# After seeing 4 heads in a row, you're 96.875% confident the coin is biased toward heads.
 
 
