@@ -95,9 +95,13 @@ x <- rnorm(1000, mean = 0, sd = 1)
 fit_norm <- fitdist(x, "norm")
 denscomp(list(fit_norm), main = "Density Comparison")
 
-y <- rlnorm(1000, meanlog = 0, sdlog = 1)
-fit_lognorm <- fitdist(y, "lnorm")
-denscomp(list(fit_lognorm), main = "Density Comparison")
+x2 <- rnorm(500, mean = 0, sd = 1)
+fit_norm2 <- fitdist(x2, "norm")
+denscomp(list(fit_norm2), main = "Density Comparison")
+
+x3 <- rnorm(200, mean = 0, sd = 1)
+fit_norm3 <- fitdist(x3, "norm")
+denscomp(list(fit_norm3), main = "Density Comparison")
 
 # 4. Coin flip example
 # Don Corleone challenges you to flip a coin three times. Each time the loser owes the winner a favor.
