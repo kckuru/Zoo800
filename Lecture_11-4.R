@@ -85,12 +85,113 @@ Y = (β0) + (β1)X + ε
 # ----> Confidence: 95% of mean predictions should fall within this interval
 
 
+# Exercise: Is this true?
 
+# 1. Observation error in your predictor variable can cause you to underestimate the slope parameter
+# of a linear regression. This is called the regression dilution effect.
 
+# Load libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 
+# Set seed for reproducibility
+set.seed(123)
 
+# Define constants
+alpha <- 5
+beta <- 8
+n <- 100
 
+# Generate x values
+x <- runif(n, min = 0, max = 10)
 
+# Create a function to generate y with a given sigma
+generate_y <- function(sigma) {
+  y <- alpha + beta*x + rnorm(n, mean = 0, sd = sigma)
+  return(y)
+}
+
+# Generate y for three different sigma values
+sigma_values <- c(1, 10, 25)
+
+data <- data.frame(
+  x = rep(x, times = length(sigma_values)),
+  sigma = factor(rep(sigma_values, each = n)),
+  y = unlist(lapply(sigma_values, generate_y))
+)
+
+head(data)
+
+p1 <- ggplot(data, aes(x = x, y = y)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  facet_wrap(~ sigma, nrow = 1) +
+  labs(
+    title = "Effect of Increasing Observation Error on Linear Regression",
+    x = "Predictor (x)",
+    y = "Response (y)"
+  ) +
+  theme_minimal()
+
+p1
+
+# 1a. Using your code above, add observation error to your X values.
+# Note: this shouldn't change the Y values since this is observation error not process error.
+
+set.seed(123)
+
+data_with_x_error <- data %>%
+  group_by(sigma) %>%
+  mutate(
+    x_observed = x + rnorm(n(), mean = 0, sd = as.numeric(as.character(sigma)))
+  ) %>%
+  ungroup()
+
+head(data_with_x_error)
+
+p2 <- ggplot(data_with_x_error, aes(x = x_observed, y = y)) +
+  geom_point(color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  facet_wrap(~ sigma, nrow = 1) +
+  labs(
+    title = "Effect of Observation Error in X on Linear Regression",
+    x = "Observed Predictor (x with error)",
+    y = "Response (y)"
+  ) +
+  theme_minimal()
+
+p2
+
+# 1b. How does your estimated slope compare to the true slope as observation error in X increases?
+# -> As observation error in X increases, the estimated slope tends to be biased towards zero
+# -> This demonstrates the regression dilution effect, where measurement error in the predictor variable
+
+# 1c. Plot a series of figures (ggplot2, facet wrap option) with the true and estimated regression lines
+# as observation error increases
+
+combined_plot <- ggplot() +
+  geom_point(data = data, aes(x = x, y = y), color = "blue", alpha = 0.5) +
+  geom_smooth(data = data, aes(x = x, y = y), method = "lm", se = FALSE, color = "black") +
+  geom_point(data = data_with_x_error, aes(x = x_observed, y = y), color = "red", alpha = 0.5) +
+  geom_smooth(data = data_with_x_error, aes(x = x_observed, y = y), method = "lm", se = FALSE, color = "black") +
+  facet_wrap(~ sigma, nrow = 1) +
+  labs(
+    title = "True vs Estimated Regression Lines with Observation Error in X",
+    x = "Predictor",
+    y = "Response"
+  ) +
+  theme_minimal()
+
+combined_plot
+
+# -> The blue points and line represent the true relationship without observation error
+# -> The red points and line represent the estimated relationship with observation error in X
+# -> As observation error increases, the estimated regression line (red) deviates more from the true line (black)
+# -> The slope of the estimated line becomes flatter as observation error increases, illustrating regression dilution
+# increases, the estimated slope becomes biased towards zero.
+# -> This demonstrates the regression dilution effect, where measurement error in the predictor variable
+# leads to an underestimation of the true slope of the relationship.
 
 
 
