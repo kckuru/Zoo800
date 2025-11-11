@@ -113,7 +113,7 @@ slope_epi <- 0.0020        # Rate of increase in color per year for the epilimni
 intercept_hypo <- intercept_epi - 0.8   # Hypolimnion starts darker (lower intercept)
 slope_hypo <- slope_epi + 0.0010        # Hypolimnion color increases faster (steeper slope)
 
-# Simulate data with noise
+# Simulate data with noise, different intercepts and slopes, including some random variation
 mean_absorbance <- ifelse(
   depth_zone == "Epilimnion",
   intercept_epi + slope_epi * year + rnorm(50, 0, 0.02), # Epilimnion, lighter and slower increase
