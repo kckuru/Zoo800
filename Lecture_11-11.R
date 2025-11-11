@@ -116,8 +116,8 @@ slope_hypo <- slope_epi + 0.0010        # Hypolimnion color increases faster (st
 # Simulate data with noise
 mean_absorbance <- ifelse(
   depth_zone == "Epilimnion",
-  intercept_epi + slope_epi * year + rnorm(50, 0, 0.02), # epilimnion, lighter and slower increase
-  intercept_hypo + slope_hypo * year + rnorm(50, 0, 0.02) # hypolimnion, darker and faster increase
+  intercept_epi + slope_epi * year + rnorm(50, 0, 0.02), # Epilimnion, lighter and slower increase
+  intercept_hypo + slope_hypo * year + rnorm(50, 0, 0.02) # Hypolimnion, darker and faster increase
 )
 
 # Combine into dataframe
