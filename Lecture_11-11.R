@@ -77,6 +77,8 @@
 # --> Yes, you are reducing the number of parameters the model needs to estimate
 # --> But be cautious, as this assumes a linear relationship!
 
+# -------------------------------------------------------------------------- #
+
 # Exercise: simulation and estimation of linear models with one categorical and one continuous predictor
 # 1a. Using code from last week's homework, add a two level categorical X value and simulate sufficient data
 # -> (say 100 observations total, split evenly between the two levels) to estimate the parameters of an
