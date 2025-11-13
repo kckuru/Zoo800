@@ -98,6 +98,8 @@
 # from 1990–2020. The hypolimnion is more isolated and often contains more dissolved organic matter,
 # leading to darker color. We ask: does the rate of browning (increase in color) differ between layers?
 
+library(tidyverse)
+
 set.seed(123)
 
 # Continuous predictor: year (1990–2020)
@@ -146,6 +148,12 @@ ggplot(ancova_data, aes(x = year, y = mean_absorbance, color = depth_zone)) +
     plot.title = element_text(face = "bold", hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
   )
+
+# Save simulated data for sharing
+write_csv(ancova_data, "Keeley_ANCOVA_simulated_troutbog.csv")
+
+head(read_csv("Keeley_ANCOVA_simulated_troutbog.csv"))
+
 
 # ===== Exercise 1b: Ecological scenario ===== #
 # This simulated data represents mean water color (absorbance, normalized to a 1 cm pathlength) 
