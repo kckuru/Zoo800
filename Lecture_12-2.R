@@ -41,5 +41,34 @@
 # -> 4 < ΔAIC < 7: less support for the model with higher AIC
 # -> ΔAIC > 10: essentially no support for the model with higher AIC
 
+## What if multiple models have delta AIC < 2?
+# -> if they're nested, prefer the simpler model.
+# -> if not nested, consider model averaging
+# --> weighted average of parameter estimates across models, with weights based on AIC
 
+## How to get the likelihood of your model
+# -> In R, use the logLik() function
+# --> returns the log-likelihood of the fitted model
+# -> To get AIC, use the AIC() function
+# --> returns the AIC of the fitted model
+# -> To compare multiple models, use the AICcmodavg package
+# --> provides functions for calculating AIC, delta AIC, and Akaike weights for multiple models
+
+# Load the lmtest package
+install.packages("lmtest")
+library(lmtest)
+
+# Create example data
+data(mtcars)
+
+# Fit a full model
+model_full <- glm(vs ~ mpg + wt + hp, data = mtcars, family = binomial)
+
+# Fit a reduced model
+model_reduced <- glm(vs ~ mpg + wt, data = mtcars, family = binomial)
+
+# Perform the likelihood ratio test
+lrtest(model_reduced, model_full)
+# The output shows the log-likelihoods of both models, the test statistic, degrees of freedom, and p-value
+# The more complex model (model_full) is significantly better if the p-value is less than 0.05
 
